@@ -34,6 +34,14 @@ namespace Color_Model {
             return max;
         }
 
+        private static double max(double r, double g) {
+            double max = r;
+            if (max < g) {
+                max = g;
+            }
+            return max;
+        }
+
         private static double min(double r, double g, double b) {
             double min = r;
             if (min > g) {
@@ -41,6 +49,14 @@ namespace Color_Model {
             }
             if (min > b) {
                 min = b;
+            }
+            return min;
+        }
+
+        private static double min(double r, double g) {
+            double min = r;
+            if (min > g) {
+                min = g;
             }
             return min;
         }
@@ -141,9 +157,9 @@ namespace Color_Model {
         }
 
         public static double[] RGBtoYCrCb(int r, int g, int b) {
-            double y = 0.299 * r + 0.587 * g + 0.114 * b;
-            double cr = r - y;
-            double cb = b - y;
+            double y = (0.299 * r) + (0.587 * g) + (0.114 * b);
+            double cr = 128 + (0.5 * r) - (0.418688 * g) - (0.081312 * b);
+            double cb = 128 - (0.168736 * r) - (0.331264 * g) + (0.5 * b);
             double[] ycrcb = { y, cr, cb };
             return ycrcb;
         }
@@ -158,9 +174,20 @@ namespace Color_Model {
             return rgb;
         }
 
-        public static int[] YCrCbtoRGB(double x, double y, double z) {
-            //not implemented yet
-            int[] rgb = { 0 };
+        public static int[] YCrCbtoRGB(double y, double cr, double cb) {
+            double Y = y;
+            double Cb = cb;
+            double Cr = cr;
+
+            int r = (int)(Y + 1.40200 * (Cr - 128));
+            int g = (int)(Y - 0.34414 * (Cb - 128) - 0.71414 * (Cr - 128));
+            int b = (int)(Y + 1.77200 * (Cb - 128));
+
+            r = (int)max(0, min(255, r));
+            g = (int)max(0, min(255, g));
+            b = (int)max(0, min(255, b));
+
+            int[] rgb = { r, g, b };
             return rgb;
         }
 
