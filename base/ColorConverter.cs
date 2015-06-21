@@ -12,6 +12,17 @@ using System.Text;
 
 namespace Color_Model {
     class ColorConverter {
+        public int r,g,b;
+
+        public static int limitRGB(int col) {
+            if (col > 255) {
+                col = 255;
+            } else if (col < 0) {
+                col = 0;
+            }
+            return col;
+        }
+
         private static double max(double r, double g, double b) {
             double max = r;
             if (max < g) {
@@ -35,7 +46,8 @@ namespace Color_Model {
         }
 
         private static double[] prosenRGB(int r, int g, int b){
-            double[] warna = { (double)r / 255, (double)b / 255, (double)b / 255 };
+            double[] warna = { (double)r / 255, (double)g / 255, (double)b / 255 };
+            //Console.WriteLine(warna[0]+" "+warna[1]+" "+warna[2]);
             return warna;
         }
 
@@ -51,21 +63,9 @@ namespace Color_Model {
 
             double[] cie = { x, y, z };
             return cie;
-        }        
-
-        public static double[] RGBtoCMYK(int r, int g, int b) {
-            double[] x = prosenRGB(r,g,b);
-
-            double k = 1 - max(x[0], x[1], x[2]);
-            double c = (1 - x[0] - k) / (1 - k);
-            double m = (1 - x[1] - k) / (1 - k);
-            double y = (1 - x[2] - k) / (1 - k);
-
-            double[] cmyk = { c, m, y, k };
-            return cmyk;
         }
 
-        public static double[] RGBtoHSV(int r, int g, int b) {
+        public static double[] RGBtoCMYK(int r, int g, int b) {
             double[] x = prosenRGB(r, g, b);
 
             double k = 1 - max(x[0], x[1], x[2]);
