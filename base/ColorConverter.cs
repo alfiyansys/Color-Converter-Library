@@ -51,6 +51,15 @@ namespace Color_Model {
             return warna;
         }
 
+        private static int[] mulRGB(double r, double g, double b) {
+            int[] warna = { (int)(r * 255), (int)(g * 255), (int)(b * 255) };
+            return warna;
+        }
+
+        /**
+         * From RGB
+         */
+
         public static double[] RGBtoCIE(int r, int g, int b) {
             double Rx = r; double Gx = g; double Bx = b;
             double X = 0.723 * Rx + 0.273 * Gx + 0.166 * Bx;
@@ -129,6 +138,85 @@ namespace Color_Model {
             double l = (Cmax + Cmin) / 2;
             double[] hsv = { h, s, l };
             return hsv;
+        }
+
+        public static double[] RGBtoYCrCb(int r, int g, int b) {
+            double y = 0.299 * r + 0.587 * g + 0.114 * b;
+            double cr = r - y;
+            double cb = b - y;
+            double[] ycrcb = { y, cr, cb };
+            return ycrcb;
+        }
+
+        /**
+         * To RGB
+         */
+
+        public static int[] CIEtoRGB(double x, double y, double z) {
+            //not implemented yet
+            int[] rgb = { 0 };
+            return rgb;
+        }
+
+        public static int[] YCrCbtoRGB(double x, double y, double z) {
+            //not implemented yet
+            int[] rgb = { 0 };
+            return rgb;
+        }
+
+        public static int[] CMYKtoRGB(double c, double m, double y, double k) {
+            double r = 255 * (1 - c) * (1 - k);
+            double g = 255 * (1 - m) * (1 - k);
+            double b = 255 * (1 - y) * (1 - k);
+
+            int[] rgb = { (int)Math.Round(r), (int)Math.Round(g), (int)Math.Round(b) };
+            return rgb;
+        }
+
+        public static int[] HSVtoRGB(double h, double s, double v) {
+            double c = v * s;
+            double x = c * (1 - Math.Abs(((h / 60) % 2) - 1));
+            double m = v - c;
+            double[] xrgb = { 0, 0, 0 };
+            if (0 <= h && h < 60) {
+                xrgb = new double[]{c, x, 0};
+            }else if (60 <= h && h < 120) {
+                xrgb = new double[]{x, c, 0};
+            }else if (120 <= h && h < 180) {
+                xrgb = new double[]{0, c, x};
+            }else if (180 <= h && h < 240) {
+                xrgb = new double[]{0, x, c};
+            }else if (240 <= h && h < 300) {
+                xrgb = new double[]{x, 0, c};
+            }else if (300 <= h && h < 360) {
+                xrgb = new double[]{c, 0, x};
+            }
+
+            int[] rgb = { (int)Math.Round((xrgb[0] + m) * 255), (int)Math.Round((xrgb[1] + m) * 255), (int)Math.Round((xrgb[2] + m) * 255) };
+            return rgb;
+        }
+
+        public static int[] HSLtoRGB(double h, double s, double l) {
+            double c = (1-Math.Abs(2*l-1))*s;
+            double x = c * (1 - Math.Abs(((h / 60) % 2) - 1));
+            double m = l - c / 2;
+            double[] xrgb = { 0, 0, 0 };
+            if (0 <= h && h < 60) {
+                xrgb = new double[] { c, x, 0 };
+            } else if (60 <= h && h < 120) {
+                xrgb = new double[] { x, c, 0 };
+            } else if (120 <= h && h < 180) {
+                xrgb = new double[] { 0, c, x };
+            } else if (180 <= h && h < 240) {
+                xrgb = new double[] { 0, x, c };
+            } else if (240 <= h && h < 300) {
+                xrgb = new double[] { x, 0, c };
+            } else if (300 <= h && h < 360) {
+                xrgb = new double[] { c, 0, x };
+            }
+
+            int[] rgb = { (int)Math.Round((xrgb[0] + m) * 255), (int)Math.Round((xrgb[1] + m) * 255), (int)Math.Round((xrgb[2] + m) * 255) };
+            return rgb;
         }
     }
 }
