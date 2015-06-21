@@ -109,16 +109,17 @@ namespace Color_Model {
             double d = Cmax - Cmin;
 
             double h = 0, s = 0;
-            if (Cmax == x[0]) {
-                h = 60 * ((x[1] - x[2]) / d);
-            }
-            if (Cmax == x[1]) {
-                h = 60 * ((x[2] - x[0]) / d + 2);
-            }
-            if (Cmax == x[2]) {
-                h = 60 * ((x[0] - x[1]) / d + 4);
-            }
             if (d == 0) {
+                h = 0;
+            } else if (Cmax == x[0]) {
+                h = 60 * (((x[1] - x[2]) / d) % 6);
+            } else if (Cmax == x[1]) {
+                h = 60 * (((x[2] - x[0]) / d) + 2);
+            } else if (Cmax == x[2]) {
+                h = 60 * (((x[0] - x[1]) / d) + 4);
+            }
+
+            if (Cmax == 0) {
                 s = 0;
             } else {
                 s = d / Cmax;
